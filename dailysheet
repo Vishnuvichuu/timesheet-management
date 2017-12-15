@@ -1,0 +1,47 @@
+ <html>
+    <head>
+        <title>Employee Management</title>
+    </head>
+    <body>
+    <center>
+	<link rel="stylesheet" href="bootstrap-3.3.7-dist\css\bootstrap.css" type="text/css"/>
+
+    <?php
+        mysql_connect("localhost","root","");
+        mysql_select_db("employee");
+        if(isset($_POST['form']) && $_POST['form']=="addtodailysheet" )
+        {
+            $date=$_POST['updatedate'];
+            $empn=$_POST['empname'];
+            $prjt= $_POST['updateprj'];
+            $hrs = $_POST['updatehrs'];
+            //echo $date;
+            $row=mysql_fetch_array(mysql_query("SELECT sum(hours) as total FROM monthly WHERE name='".$empn."' and date='".$date."' ;"));
+            //echo $row['total']."lll<br>";
+            
+            echo "<h2>NAME:".$empn."</h2>";
+            //var_dump($row);
+            $sql="INSERT into monthly (Date,prjname,hours,name) values('".$date."','".$prjt."',".$hrs.",'".$empn."');";
+            if(($row['total']==NULL && $row['total']<=24) || $row['total']+$hrs<=24){
+            $res=mysql_query($sql);
+            echo "";?>
+			<div class="alert alert-success">
+    <strong>Success!</strong> Updated Successfully."
+	<?php
+            }
+            else
+            {
+				?>
+				<div class="aler alert-danger"><strong>Already worked</strong><?php echo $row['total'];?><strong>Hours.<br>Note*:An Employee can work only 24 hrs per day.</div><br>
+				<?php
+           // echo "<div class="alert alert-warning">ALREADY WORKED ".$row['total']." HRS.</p>";
+            //echo "Note * : An Employee can work only 24 hrs per day";
+            }
+        }
+	?>
+	 <form method="post" source="./index.php"  >
+	 <button type="submit" formaction="./index.php" class="btn btn-primary">BACK</button>
+	 </form>
+    </center>
+    </body>
+</html>
