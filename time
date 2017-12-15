@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>Employee Management</title>
+    </head>
+    <body>
+    <center>
+	<link rel="stylesheet" href="bootstrap-3.3.7-dist\css\bootstrap.css" type="text/css"/>
+	<link rel="stylesheet" href="css\bootstrap-datepicker.css" type="text/css"/>
+	<link rel="stylesheet" href="input\dist\bootstrap-spinner.css" type="text/css"/>
+    <?php
+        if(isset($_POST['form']) && $_POST['form']=="timesheet" )
+        {
+            mysql_connect("localhost","root","");
+            mysql_select_db("employee");
+            echo "</table>";
+                $sql="SELECT * FROM projects;";
+                $result=mysql_query($sql);
+                $prj="<select id='sub2' name='updateprj' class='btn btn-primary dropdown-toggle' >";
+                while($row=mysql_fetch_array($result))
+                {
+                $prj.= "<option value='".$row['prjname']."'>".$row['prjname']."</option>";
+                }
+                $prj.="</select>";
+        ?>
+        <form method="post" action="./dailysheet.php">
+            <h1>TIMESHEET MANAGEMENT</h1><br>
+	        <h2>Timesheet Details</h2><?php echo $_POST['empname']; ?>
+    
+            <input type="hidden" name="form" value="addtodailysheet" />
+           <input type="hidden" name="empname" id="name" value="<?php echo $_POST['empname']; ?>"/><br>
+            SELECT PROJECT :&nbsp&nbsp<?php echo $prj; ?><br><br>
+            HOURS WORKED :&nbsp&nbsp <input type="number" name="updatehrs" value="0" min="0" max="24" class="spinner"/><br><br>
+	        DATE:&nbsp&nbsp&nbsp <input type="date" name="updatedate" class="datepicker"/><br><br><br>
+            <input type="submit" value="INSERT" class="btn btn-primary"/>&nbsp&nbsp
+			 <button type="submit" formaction="./index.php" class="btn btn-primary">BACK</button>
+        </form>
+    <?php    
+        }
+    ?>
+    </center>
+    </body>
+</html>
