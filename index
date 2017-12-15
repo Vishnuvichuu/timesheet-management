@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Timesheet Management</title>
+    </head>
+    <body>
+    <center>
+        <h1>TIMESHEET MANAGEMENT</h1>
+        <h2>Employee Name</h2>
+		<link rel="stylesheet" href="bootstrap-3.3.7-dist\css\bootstrap.css" type="text/css"/>
+        <?php 
+            mysql_connect("localhost","root","");
+            mysql_select_db("employee");
+        ?>
+        <form method="POST" action="details.php">
+            <input type="hidden" name="form" value="details">
+                <?php
+                    $sql="SELECT name FROM emp ;";
+                    $result=mysql_query($sql);
+                    $select="<select id='emp-select' name='empname' class='btn btn-primary dropdown-primary' >";
+					
+                        while($row=mysql_fetch_array($result))
+                        {
+                            $select.= "<option value='".$row['name']."'>".$row['name']."</option>";
+                        }
+                    $select.="</select>";
+	                echo $select;
+	            ?>
+            <br><br>
+            <input type="submit" value="GET DETAILS" class='btn-primary' />
+        </form>
+    </center>
+    </body>
+</html>
