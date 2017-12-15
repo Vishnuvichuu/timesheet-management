@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>Employee Management</title>
+    </head>
+    <body>
+    <center>
+        <h1>TIMESHEET MANAGEMENT</h1>
+<link rel="stylesheet" href="bootstrap-3.3.7-dist\css\bootstrap.css" type="text/css"/>
+        <?php 
+            mysql_connect("localhost","root","");
+            mysql_select_db("employee");
+            $empname=$_POST['empname'];
+            if(isset($_POST['form']) && ($_POST['form']=="details" || $_POST['form']=="update"))
+            {
+                $sql2="SELECT * FROM emp where name ='".$empname."';";
+                $result2=mysql_query($sql2);
+                $sql3="SELECT Date,prjname,sum(hours) FROM monthly WHERE name='".$empname."' GROUP BY Date,prjname;";
+
+                $result3=mysql_query($sql3);
+
+        ?>
+		
+        <h1><h1>EMPLOYEE DETAILS</h1></h1><br>
+		    
+		<table border='1' class='table'>
+		<thead>
+		  <tr>
+		      <th>NAME </th>
+		      <th>CONTACT</th>
+		      <th>DESIGNATION</th>
+		      <th>EMAIL</th>
+		      <th>GENDER</th>
+		  </tr>
+		  </thead>
+        <?php
+
+            while($row=mysql_fetch_array($result2))
+            {
+                echo "<tr>";
+		        echo "<td>".$row['name']."</td>";
+                echo "<td>".$row['contact']."</td>";
+                echo "<td>".$row['designation']."</td>";
+                echo "<td>".$row['email']."</td>";
+                echo "<td>".$row['gender']."</td>";
+            }
+	    ?>
+        </table>
+
+        <h1>OVERALL WORK IN A MONTH</h1><br>
+        <table border='1' class='table'>
+		<thead>
+		  <tr>
+		      <th>DATE</th>
+		      <th>PROJECT NAME</th>
+		      <th>HOURS</th>
+		     
+		  </tr>
+		  </thead>
+        <?php
+
+            while($row1=mysql_fetch_array($result3))
+            {
+                echo "<tr>";
+				echo "<td>".$row1['Date']."</td>";
+		        echo "<td>".$row1['prjname']."</td>";
+		        echo "<td>".$row1['sum(hours)']."</td>";
+		      
+	       }
+	    ?>
+        </table>
+        <br>
+        <form method="post" src="./timesheet.php" >
+	       <input type="hidden" name="form" value="timesheet">
+           <input type="hidden" name="empname" value="<?php echo $_POST['empname'];?>">
+           <button type="submit" formaction="./timesheet.php" class="btn btn-primary">ADD TIMESHEET</button>
+		   <button type="submit" formaction="./index.php" class="btn btn-primary">BACK</button>
+        </form>    
+        <?php } ?>
+        </center>
+    </body>
+</html>
